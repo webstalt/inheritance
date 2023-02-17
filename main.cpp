@@ -2,7 +2,7 @@
 #include <exception>
 
 #include "IntArray.h"
-#include "IntArray.cpp"
+#include "exceptions.h"
 
 int main() 
 {
@@ -32,7 +32,12 @@ int main()
     array.RemoveElem(5);
 
     }
-    catch (std::exception& e)
+    catch (Bad_range& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    
+    catch (Bad_length& e)
     {
         std::cout << e.what() << std::endl;
     }

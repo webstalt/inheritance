@@ -6,7 +6,7 @@
 IntArray::IntArray(int length)
 {
   if (length <= 0) {
-    throw Bad_range();
+    throw Bad_length();
   };
   m_length = length;
   m_data = new int[length];
@@ -25,7 +25,7 @@ void IntArray::Erase() {
 
 int& IntArray::operator[] (int index)
 {
-  if (index < m_length - 1)
+  if (index < 0 || index > m_length - 1)
   {
     throw Bad_range();
   }
@@ -37,7 +37,7 @@ void IntArray::Reallocate(int newLength)
     Erase();
     if (newLength < 0)
     {
-      throw Bad_range();
+      throw Bad_length();
     };
     m_data = new int[newLength];
     m_length = newLength;
