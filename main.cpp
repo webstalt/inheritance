@@ -1,50 +1,41 @@
 #include <iostream>
-using namespace std;
+#include <exception>
 
-#include "Earphones.cpp"
-#include "HairDryer.cpp"
-#include "Autonomic.cpp"
-#include "Wired.cpp"
+#include "IntArray.h"
+#include "IntArray.cpp"
 
-using namespace std;
+int main() 
+{
+    // Declare an array with 10 elements
+    IntArray array(10);
 
+    // Fill the array with numbers 1 through 10
+    for (int i = 0; i < 10; ++i)
+        array[i] = i + 1;
 
-int main() {
-    IElectronics* shopItems[2];
-    
-    shopItems[0] = new Earphones(220, 60);
-    shopItems[1] = new HairDryer(1300);
-    
-    bool open = true;
-    while (open)
+    IntArray b(7);
+    for (int i = 0; i < 7; ++i)
     {
-        cout << "Выберите гаджет : 1 - наушники, 2 - фен для волос, 0 чтобы выйти" << endl;
-        int choice;
-        cin >> choice;
-
-        switch (choice)
-        {
-            case 1:
-                shopItems[0]->ShowSpec();
-                break;
-            
-            case 2:
-                shopItems[1]->ShowSpec();
-                break;
-            
-                
-            case 0:
-                open = false;
-                break;
-            
-            default:
-                cout << "Выберите гаджет от 1 до 2 или 0, чтобы выйти" << endl;
-            break;
-        }
+        b[i] = i + 1;
     }
 
-   delete shopItems[0];
-   delete shopItems[1];
+    try 
+    {
+    array.Resize(8);
 
+    array.GetElement(4);
+
+    array.RemoveElem(3);
+    array.Reallocate(7);
+    array.Copy(b);
+    array.InsertElem(3, 5);
+    array.RemoveElem(5);
+
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+    
     return 0;
 };
