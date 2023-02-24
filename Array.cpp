@@ -1,29 +1,29 @@
 #include <iostream>
 // #include <exception>
-#include "IntArray.h"
+#include "Array.h"
 #include "exceptions.h"
 
-IntArray::IntArray(int length)
+template <typename T> Array(unsigned length)
 {
   if (length <= 0) {
     throw Bad_length();
   };
   m_length = length;
-  m_data = new int[length];
+  m_data = new T[length];
 }
 
-int IntArray::GetSize() const
+template <typename T> Array<T>::GetSize() const
 {
   return m_length;
 }
 
-void IntArray::Erase() {
+template <typename T> Array<T>::Erase() {
   delete[] m_data;
   m_data = nullptr;
   m_length = 0;
 }
 
-int& IntArray::operator[] (int index)
+int& Array::operator[] (int index)
 {
   if (index < 0 || index > m_length - 1)
   {
@@ -32,7 +32,7 @@ int& IntArray::operator[] (int index)
   return m_data[index];
 }
 
-void IntArray::Reallocate(int newLength)
+void Array<T>::Reallocate(int newLength)
 {
     Erase();
     if (newLength < 0)
@@ -43,7 +43,7 @@ void IntArray::Reallocate(int newLength)
     m_length = newLength;
 }
 
-void IntArray::Resize(int newLength)
+template <typename T>void Array<T>::Resize(int newLength)
 {
  if (newLength == m_length)
     return;
@@ -55,7 +55,7 @@ void IntArray::Resize(int newLength)
       }
 
     // First we have to allocate a new array
-    int* data = new int[newLength];
+    T* data = new T[newLength];
 
     if (m_length > 0)
     {
@@ -71,7 +71,7 @@ void IntArray::Resize(int newLength)
     m_length = newLength;
 }
 
-void IntArray::Copy(const IntArray& a)
+template <typename T>void Array<T>::Copy(const Array& a)
 {
    // Set the size of the new array appropriately
   Reallocate(a.GetSize());
@@ -80,7 +80,7 @@ void IntArray::Copy(const IntArray& a)
       m_data[index] = a.m_data[index];
 }
 
-int& IntArray::GetElement(int index) const
+template <typename T>T Array<T>::GetElement(int index) const
 {
   if (index >= m_length) 
   {
@@ -89,29 +89,29 @@ int& IntArray::GetElement(int index) const
   return m_data[index];
 }
 
-IntArray::~IntArray() 
+template <typename> Array<T>::~Array() 
 {
   delete[] m_data;
 }
 
-void IntArray::InsertElem(int value, int index) 
+template <typename T> Array<T>::InsertElem(T value, int index) 
 {
   if (index < 0 || index >= m_length)
   {
     throw Bad_range();
   }
   
-   int* data = new int[m_length+1];
+   data = new T[m_length+1];
 
     // Copy all of the elements up to the index
-    for (int before = 0; before < index; ++before)
+    for (auto before = 0; before < index; ++before)
         data[before] = m_data[before];
 
     // Insert our new element into the new array
     data[index] = value;
 
     // Copy all of the values after the inserted element
-    for (int after = index; after < m_length; ++after)
+    for (auto after = index; after < m_length; ++after)
         data[after+1] = m_data[after];
 
     delete[] m_data;
@@ -119,7 +119,7 @@ void IntArray::InsertElem(int value, int index)
     ++m_length;
 }
 
-void IntArray::RemoveElem(int index) 
+template <typename T> Array<T>::RemoveElem(int index) 
 {
   if (index < 0 || index >= m_length)
   {
@@ -134,14 +134,14 @@ void IntArray::RemoveElem(int index)
     }
 
     // First create a new array one element smaller than the old array
-    int* data = new int[m_length-1];
+    data = new T[m_length-1];
 
     // Copy all of the elements up to the index
-    for (int before = 0; before < index; ++before)
+    for (auto before = 0; before < index; ++before)
         data[before] = m_data[before];
 
     // Copy all of the values after the removed element
-    for (int after = index + 1; after < m_length; ++after)
+    for (auto after = index + 1; after < m_length; ++after)
         data[after-1] = m_data[after];
 
     // Finally, delete the old array, and use the new array instead

@@ -1,20 +1,20 @@
 #include <iostream>
 #include <exception>
 
-#include "IntArray.h"
+#include "Array.h"
 #include "exceptions.h"
 
 int main() 
 {
     // Declare an array with 10 elements
-    IntArray array(10);
+    Array<int> array(10);
 
     // Fill the array with numbers 1 through 10
-    for (int i = 0; i < 10; ++i)
+    for (auto i = 0; i < 10; ++i)
         array[i] = i + 1;
 
-    IntArray b(7);
-    for (int i = 0; i < 7; ++i)
+    Array b(7);
+    for (auto i = 0; i < 7; ++i)
     {
         b[i] = i + 1;
     }
